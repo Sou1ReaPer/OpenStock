@@ -258,6 +258,8 @@ export const searchStocks = cache(async (query?: string): Promise<StockWithWatch
                 };
                 return item;
             })
+            // Finnhub can return the same symbol more than once (e.g. ADR + Common Stock); keep the first
+            .filter((item, index, arr) => item.symbol && arr.findIndex((s) => s.symbol === item.symbol) === index)
             .slice(0, 15);
 
         return mapped;
