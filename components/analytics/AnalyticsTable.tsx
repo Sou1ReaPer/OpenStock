@@ -4,6 +4,7 @@ import React, { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { ArrowDown, ArrowUp, ChevronDown, ChevronRight, ExternalLink } from 'lucide-react';
 import TradingViewWidget from '@/components/TradingViewWidget';
+import Panel from '@/components/Panel';
 import { CANDLE_CHART_WIDGET_CONFIG } from '@/lib/constants';
 import { formatSymbolForTradingView, formatTimeAgo } from '@/lib/utils';
 import type { AnalyticsStock } from '@/lib/actions/analytics.helpers';
@@ -25,12 +26,12 @@ const COLUMNS: Column[] = [
         value: (s) => s.symbol,
         render: (s) => (
             <div className="flex flex-col">
-                <span className="font-mono font-semibold text-gray-100">{s.symbol}</span>
-                <span className="text-xs text-gray-500 truncate max-w-[160px]">{s.name}</span>
+                <span className="font-mono font-semibold text-foreground">{s.symbol}</span>
+                <span className="text-xs text-faint truncate max-w-[160px]">{s.name}</span>
             </div>
         ),
     },
-    { key: 'price', label: 'Price', value: (s) => s.price, render: (s) => <span className="text-gray-100">{fmtPrice(s.price)}</span> },
+    { key: 'price', label: 'Price', value: (s) => s.price, render: (s) => <span className="text-foreground">{fmtPrice(s.price)}</span> },
     {
         key: 'change',
         label: 'Today',
@@ -82,7 +83,7 @@ function ExpandedRow({ stock, width }: { stock: AnalyticsStock; width: number | 
     return (
         // Pinned to the visible scroll area so the panel doesn't stretch to the full table width on narrow screens
         <div
-            className="sticky left-0 grid grid-cols-1 lg:grid-cols-3 gap-4 p-4 bg-black/40"
+            className="sticky left-0 grid grid-cols-1 lg:grid-cols-3 gap-4 p-4 bg-canvas"
             style={width ? { width } : undefined}
         >
             <div className="lg:col-span-2 min-w-0">
@@ -94,9 +95,9 @@ function ExpandedRow({ stock, width }: { stock: AnalyticsStock; width: number | 
                 />
             </div>
             <div className="flex flex-col gap-3 min-w-0">
-                <h3 className="text-sm font-semibold text-gray-100">Latest news</h3>
+                <h3 className="text-sm font-semibold text-foreground">Latest news</h3>
                 {stock.news.length === 0 ? (
-                    <p className="text-sm text-gray-500">No company news in the past week.</p>
+                    <p className="text-sm text-faint">No company news in the past week.</p>
                 ) : (
                     <ul className="flex flex-col gap-3">
                         {stock.news.map((n) => (
@@ -105,10 +106,10 @@ function ExpandedRow({ stock, width }: { stock: AnalyticsStock; width: number | 
                                     href={n.url}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="group block text-sm text-gray-300 hover:text-teal-400"
+                                    className="group block text-sm text-muted-foreground hover:text-brand-ink"
                                 >
                                     <span className="line-clamp-2">{n.headline}</span>
-                                    <span className="text-xs text-gray-500">
+                                    <span className="text-xs text-faint">
                                         {n.source} · {formatTimeAgo(n.datetime)}
                                     </span>
                                 </a>
@@ -117,14 +118,14 @@ function ExpandedRow({ stock, width }: { stock: AnalyticsStock; width: number | 
                     </ul>
                 )}
                 {stock.foreignFundamentals && (
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-faint">
                         Fundamentals come from the {stock.fundamentalsCurrency} home listing; market cap and 52-week range are hidden
                         because they are not comparable with the USD quote.
                     </p>
                 )}
                 <Link
                     href={`/stocks/${stock.symbol}`}
-                    className="mt-auto inline-flex items-center gap-1.5 text-sm text-teal-400 hover:text-teal-300"
+                    className="mt-auto inline-flex items-center gap-1.5 text-sm text-brand-ink hover:underline"
                 >
                     Full stock page <ExternalLink className="h-3.5 w-3.5" />
                 </Link>
@@ -163,26 +164,22 @@ export default function AnalyticsTable({ stocks }: { stocks: AnalyticsStock[] })
     };
 
     return (
-        <section className="rounded-xl border border-white/10 bg-[#141414] min-w-0">
-            <header className="p-5 pb-3">
-                <h2 className="text-base font-semibold text-gray-100">Watchlist details</h2>
-                <p className="text-sm text-gray-500 mt-0.5">Click a column to sort, click a row for chart and news.</p>
-            </header>
+        <Panel title="Watchlist details" sub="Click a column to sort, click a row for chart and news" bodyClassName="overflow-hidden">
             <div ref={scrollRef} className="overflow-x-auto">
-                <table className="w-full text-sm tabular-nums">
-                    <thead className="border-y border-white/10 text-gray-400">
+                <table className="data-table text-sm">
+                    <thead>
                         <tr>
-                            <th className="w-8" aria-label="Expand" />
+                            <th className="w-8 !px-0" aria-label="Expand" />
                             {COLUMNS.map((c) => (
                                 <th
                                     key={c.key}
-                                    className={`px-3 py-3 font-medium whitespace-nowrap ${c.align === 'left' ? 'text-left' : 'text-right'}`}
+                                    className={c.align === 'left' ? '' : 'is-num'}
                                     aria-sort={sortKey === c.key ? (dir === 1 ? 'ascending' : 'descending') : 'none'}
                                 >
                                     <button
                                         type="button"
                                         onClick={() => onSort(c.key)}
-                                        className={`inline-flex items-center gap-1 hover:text-gray-100 ${sortKey === c.key ? 'text-gray-100' : ''}`}
+                                        className={`inline-flex items-center gap-1 hover:text-foreground ${sortKey === c.key ? 'text-foreground' : ''}`}
                                     >
                                         {c.label}
                                         {sortKey === c.key && (dir === 1 ? <ArrowUp className="h-3 w-3" /> : <ArrowDown className="h-3 w-3" />)}
@@ -191,23 +188,23 @@ export default function AnalyticsTable({ stocks }: { stocks: AnalyticsStock[] })
                             ))}
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-white/5">
+                    <tbody>
                         {sorted.map((s) => {
                             const isOpen = expanded === s.symbol;
                             return (
                                 <Fragment key={s.symbol}>
                                     <tr
                                         onClick={() => setExpanded(isOpen ? null : s.symbol)}
-                                        className={`cursor-pointer transition-colors hover:bg-white/5 ${isOpen ? 'bg-white/5' : ''}`}
+                                        className={`cursor-pointer ${isOpen ? '[&>td]:!bg-hover' : ''}`}
                                         aria-expanded={isOpen}
                                     >
-                                        <td className="pl-3 text-gray-500">
+                                        <td className="!pr-0 text-faint">
                                             {isOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
                                         </td>
                                         {COLUMNS.map((c) => (
                                             <td
                                                 key={c.key}
-                                                className={`px-3 py-3 whitespace-nowrap text-gray-300 ${c.align === 'left' ? 'text-left' : 'text-right'}`}
+                                                className={`text-muted-foreground ${c.align === 'left' ? '' : 'is-num'}`}
                                             >
                                                 {c.render(s)}
                                             </td>
@@ -215,7 +212,7 @@ export default function AnalyticsTable({ stocks }: { stocks: AnalyticsStock[] })
                                     </tr>
                                     {isOpen && (
                                         <tr>
-                                            <td colSpan={COLUMNS.length + 1} className="p-0">
+                                            <td colSpan={COLUMNS.length + 1} className="!h-auto !p-0">
                                                 <ExpandedRow stock={s} width={visibleWidth} />
                                             </td>
                                         </tr>
@@ -226,6 +223,6 @@ export default function AnalyticsTable({ stocks }: { stocks: AnalyticsStock[] })
                     </tbody>
                 </table>
             </div>
-        </section>
+        </Panel>
     );
 }

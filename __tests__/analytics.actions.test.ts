@@ -1,5 +1,11 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
+// The Finnhub layer reads its key pool at import time and pulls in auth for other actions
+vi.hoisted(() => {
+    process.env.FINNHUB_API_KEYS = 'test-key';
+});
+vi.mock('@/lib/better-auth/auth', () => ({ getSession: vi.fn() }));
+
 import { getAnalyticsData } from '@/lib/actions/analytics.actions';
 import {
     computeDrawdown,

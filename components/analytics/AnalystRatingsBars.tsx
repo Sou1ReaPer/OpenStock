@@ -22,18 +22,18 @@ function RowTooltip({ active, payload }: { active?: boolean; payload?: { payload
     if (!active || !payload?.length) return null;
     const r = payload[0].payload;
     return (
-        <div className="rounded-lg border border-white/10 bg-black/90 px-3 py-2 text-xs shadow-xl min-w-[160px]">
-            <p className="font-semibold text-gray-100">
-                {r.symbol} <span className="font-normal text-gray-400">· {r.total} analysts · {r.period}</span>
+        <div className="rounded-lg border border-line bg-card px-3 py-2 text-xs shadow-xl min-w-[160px]">
+            <p className="font-semibold text-foreground">
+                {r.symbol} <span className="font-normal text-muted-foreground">· {r.total} analysts · {r.period}</span>
             </p>
             <ul className="mt-1 space-y-0.5">
                 {SEGMENTS.map((s) => (
-                    <li key={s.key} className="flex items-center justify-between gap-4 text-gray-300">
+                    <li key={s.key} className="flex items-center justify-between gap-4 text-muted-foreground">
                         <span className="flex items-center gap-1.5">
                             <span className="inline-block h-2 w-2 rounded-sm" style={{ background: s.color }} />
                             {s.label}
                         </span>
-                        <span className="tabular-nums text-gray-100">{r[`${s.key}Count`]}</span>
+                        <span className="tabular-nums text-foreground">{r[`${s.key}Count`]}</span>
                     </li>
                 ))}
             </ul>
@@ -62,10 +62,10 @@ export default function AnalystRatingsBars({ stocks }: { stocks: AnalyticsStock[
             description="Share of analysts per rating, latest month. Sorted by buy + strong buy."
         >
             {rows.length === 0 ? (
-                <p className="py-16 text-center text-sm text-gray-500">No analyst ratings available.</p>
+                <p className="py-16 text-center text-sm text-faint">No analyst ratings available.</p>
             ) : (
                 <>
-                    <ul className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-400 mb-3">
+                    <ul className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground mb-3">
                         {SEGMENTS.map((s) => (
                             <li key={s.key} className="flex items-center gap-1.5">
                                 <span className="inline-block h-2.5 w-2.5 rounded-sm" style={{ background: s.color }} />

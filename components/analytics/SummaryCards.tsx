@@ -4,10 +4,12 @@ import { changeClass, daysUntil, earningsHourLabel, fmtPct } from './format';
 
 function Card({ label, value, detail, valueClass }: { label: string; value: string; detail?: string; valueClass?: string }) {
     return (
-        <div className="rounded-xl border border-white/10 bg-[#141414] p-5">
-            <p className="text-xs uppercase tracking-wider text-gray-500">{label}</p>
-            <p className={`mt-2 text-2xl font-semibold tabular-nums ${valueClass ?? 'text-gray-100'}`}>{value}</p>
-            {detail && <p className="mt-1 text-sm text-gray-400 truncate">{detail}</p>}
+        <div className="hatch">
+            <div className="card p-4">
+            <p className="kicker text-faint">{label}</p>
+            <p className={`mt-2 text-2xl font-semibold tabular-nums ${valueClass ?? 'text-foreground'}`}>{value}</p>
+            {detail && <p className="mt-1 text-sm text-muted-foreground truncate">{detail}</p>}
+            </div>
         </div>
     );
 }
@@ -27,7 +29,7 @@ export default function SummaryCards({ stocks }: { stocks: AnalyticsStock[] }) {
     const nextDays = next ? daysUntil(next.nextEarnings!.date) : null;
 
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
             <Card
                 label="Watchlist today"
                 value={fmtPct(avgChange, 2, true)}

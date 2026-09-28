@@ -1,10 +1,11 @@
-// Chart colors, stepped for the app's dark surface (see dataviz reference palette, dark column)
+// Chart colors. Surfaces and ink mirror the globals.css tokens (recharts needs literal colors,
+// not var()); data hues are the dataviz reference palette's dark steps.
 export const CHART_COLORS = {
-    surface: '#141414',
-    grid: '#262626',
-    axis: '#737373',
-    textPrimary: '#f3f4f6',
-    textSecondary: '#9ca3af',
+    surface: 'oklch(0.235 0.008 95)', // --card
+    grid: 'oklch(0.29 0.008 95)', // --line
+    axis: 'oklch(0.62 0.012 95)', // --faint
+    textPrimary: 'oklch(0.95 0.006 95)', // --text
+    textSecondary: 'oklch(0.74 0.012 95)', // --muted
     series: '#3987e5',
     positive: '#3987e5',
     negative: '#e66767',
@@ -44,8 +45,8 @@ export function fmtMarketCap(millions: number | null | undefined): string {
 }
 
 export function changeClass(v: number | null | undefined): string {
-    if (!v) return 'text-gray-400';
-    return v > 0 ? 'text-green-500' : 'text-red-500';
+    if (!v) return 'text-muted-foreground';
+    return v > 0 ? 'text-up' : 'text-down';
 }
 
 export function daysUntil(date: string, from = new Date()): number {

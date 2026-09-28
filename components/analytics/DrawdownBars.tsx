@@ -12,11 +12,11 @@ function RowTooltip({ active, payload }: { active?: boolean; payload?: { payload
     if (!active || !payload?.length) return null;
     const r = payload[0].payload;
     return (
-        <div className="rounded-lg border border-white/10 bg-black/90 px-3 py-2 text-xs shadow-xl">
-            <p className="font-semibold text-gray-100">{r.symbol}</p>
-            <p className="text-gray-300 mt-1">From 52-week high <span className="tabular-nums text-gray-100">{fmtPct(r.drawdown)}</span></p>
-            <p className="text-gray-300">Price <span className="tabular-nums text-gray-100">{fmtPrice(r.price)}</span></p>
-            <p className="text-gray-300">52-week high <span className="tabular-nums text-gray-100">{fmtPrice(r.high)}</span></p>
+        <div className="rounded-lg border border-line bg-card px-3 py-2 text-xs shadow-xl">
+            <p className="font-semibold text-foreground">{r.symbol}</p>
+            <p className="text-muted-foreground mt-1">From 52-week high <span className="tabular-nums text-foreground">{fmtPct(r.drawdown)}</span></p>
+            <p className="text-muted-foreground">Price <span className="tabular-nums text-foreground">{fmtPrice(r.price)}</span></p>
+            <p className="text-muted-foreground">52-week high <span className="tabular-nums text-foreground">{fmtPrice(r.high)}</span></p>
         </div>
     );
 }
@@ -35,7 +35,7 @@ export default function DrawdownBars({ stocks }: { stocks: AnalyticsStock[] }) {
             footnote={excluded.length ? `Not shown (52-week range reported in a foreign currency or unavailable): ${excluded.join(', ')}.` : undefined}
         >
             {rows.length === 0 ? (
-                <p className="py-16 text-center text-sm text-gray-500">No price range data available.</p>
+                <p className="py-16 text-center text-sm text-faint">No price range data available.</p>
             ) : (
                 <div style={{ height: Math.max(160, rows.length * 36 + 40) }}>
                     <ResponsiveContainer width="100%" height="100%">

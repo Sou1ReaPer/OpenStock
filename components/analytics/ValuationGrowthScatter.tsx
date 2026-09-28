@@ -29,11 +29,11 @@ function PointTooltip({ active, payload }: { active?: boolean; payload?: { paylo
     if (!active || !payload?.length) return null;
     const p = payload[0].payload;
     return (
-        <div className="rounded-lg border border-white/10 bg-black/90 px-3 py-2 text-xs shadow-xl">
-            <p className="font-semibold text-gray-100">{p.symbol} <span className="font-normal text-gray-400">{p.name}</span></p>
-            <p className="text-gray-300 mt-1">Forward P/E <span className="tabular-nums text-gray-100">{fmtNum(p.forwardPE)}</span></p>
-            <p className="text-gray-300">Revenue growth <span className="tabular-nums text-gray-100">{fmtPct(p.revenueGrowth, 1, true)}</span></p>
-            <p className="text-gray-300">Market cap <span className="tabular-nums text-gray-100">{fmtMarketCap(p.marketCap)}</span></p>
+        <div className="rounded-lg border border-line bg-card px-3 py-2 text-xs shadow-xl">
+            <p className="font-semibold text-foreground">{p.symbol} <span className="font-normal text-muted-foreground">{p.name}</span></p>
+            <p className="text-muted-foreground mt-1">Forward P/E <span className="tabular-nums text-foreground">{fmtNum(p.forwardPE)}</span></p>
+            <p className="text-muted-foreground">Revenue growth <span className="tabular-nums text-foreground">{fmtPct(p.revenueGrowth, 1, true)}</span></p>
+            <p className="text-muted-foreground">Market cap <span className="tabular-nums text-foreground">{fmtMarketCap(p.marketCap)}</span></p>
         </div>
     );
 }
@@ -76,7 +76,7 @@ export default function ValuationGrowthScatter({ stocks }: { stocks: AnalyticsSt
             footnote={notes.join(' ')}
         >
             {points.length === 0 ? (
-                <p className="py-16 text-center text-sm text-gray-500">No valuation data available.</p>
+                <p className="py-16 text-center text-sm text-faint">No valuation data available.</p>
             ) : (
                 <div className="h-[320px]">
                     <ResponsiveContainer width="100%" height="100%">

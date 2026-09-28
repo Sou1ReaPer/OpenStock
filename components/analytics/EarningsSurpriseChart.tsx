@@ -10,11 +10,11 @@ function QuarterTooltip({ active, payload }: { active?: boolean; payload?: { pay
     if (!active || !payload?.length) return null;
     const q = payload[0].payload;
     return (
-        <div className="rounded-lg border border-white/10 bg-black/90 px-3 py-2 text-xs shadow-xl">
-            <p className="font-semibold text-gray-100">{q.label}</p>
-            <p className="text-gray-300 mt-1">EPS actual <span className="tabular-nums text-gray-100">{fmtNum(q.actual, 2)}</span></p>
-            <p className="text-gray-300">EPS estimate <span className="tabular-nums text-gray-100">{fmtNum(q.estimate, 2)}</span></p>
-            <p className="text-gray-300">Surprise <span className="tabular-nums text-gray-100">{fmtPct(q.surprisePercent, 1, true)}</span></p>
+        <div className="rounded-lg border border-line bg-card px-3 py-2 text-xs shadow-xl">
+            <p className="font-semibold text-foreground">{q.label}</p>
+            <p className="text-muted-foreground mt-1">EPS actual <span className="tabular-nums text-foreground">{fmtNum(q.actual, 2)}</span></p>
+            <p className="text-muted-foreground">EPS estimate <span className="tabular-nums text-foreground">{fmtNum(q.estimate, 2)}</span></p>
+            <p className="text-muted-foreground">Surprise <span className="tabular-nums text-foreground">{fmtPct(q.surprisePercent, 1, true)}</span></p>
         </div>
     );
 }
@@ -38,8 +38,8 @@ export default function EarningsSurpriseChart({ stocks }: { stocks: AnalyticsSto
                     onClick={() => setSelected(s.symbol)}
                     className={`rounded-md border px-2.5 py-1 text-xs font-mono transition-colors ${
                         s.symbol === stock?.symbol
-                            ? 'border-teal-500/60 bg-teal-500/10 text-gray-100'
-                            : 'border-white/10 text-gray-400 hover:text-gray-100 hover:bg-white/5'
+                            ? 'border-brand/60 bg-brand-soft text-foreground'
+                            : 'border-line text-muted-foreground hover:text-foreground hover:bg-hover'
                     }`}
                 >
                     {s.symbol}
@@ -60,10 +60,10 @@ export default function EarningsSurpriseChart({ stocks }: { stocks: AnalyticsSto
             }
         >
             {!stock || data.length === 0 ? (
-                <p className="py-16 text-center text-sm text-gray-500">No earnings history available.</p>
+                <p className="py-16 text-center text-sm text-faint">No earnings history available.</p>
             ) : (
                 <>
-                    <ul className="flex gap-4 text-xs text-gray-400 mb-3">
+                    <ul className="flex gap-4 text-xs text-muted-foreground mb-3">
                         <li className="flex items-center gap-1.5">
                             <span className="inline-block h-2.5 w-2.5 rounded-sm" style={{ background: CHART_COLORS.positive }} />
                             Beat
