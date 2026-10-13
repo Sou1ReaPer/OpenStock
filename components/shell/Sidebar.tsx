@@ -57,12 +57,12 @@ const Sidebar = ({ user, watchlist }: SidebarProps) => {
                 </Link>
             </nav>
 
-            <div className="flex flex-col gap-1 min-h-0">
-                <p className="side-label">Watching</p>
+            <div className="flex min-h-0 flex-col gap-1">
+                <p className="side-label shrink-0">Watching</p>
                 {watchlist.length === 0 ? (
                     <p className="px-2.5 text-[12.5px] text-faint">Star a stock to pin it here.</p>
                 ) : (
-                    <ul className="flex flex-col gap-0.5">
+                    <ul className="scrollbar-hide-default flex min-h-0 flex-col gap-0.5 overflow-y-auto">
                         {watchlist.map(({ symbol, company }) => (
                             <li key={symbol}>
                                 <Link
@@ -97,7 +97,8 @@ const Sidebar = ({ user, watchlist }: SidebarProps) => {
             <div className="flex flex-col gap-1.5">
                 {partners.map((sponsor) => (
                     <a key={sponsor.name} href={sponsor.url} target="_blank" rel="noreferrer" title={sponsor.name} className="flex h-11 items-center gap-2.5 rounded-[11px] px-3 shadow-[inset_0_0_0_1px_var(--line)] transition-colors hover:bg-white/5">
-                        {sponsor.logo ? <img src={sponsor.logo} alt={sponsor.name} className="h-5 w-auto max-w-[120px]" /> : <span className="truncate text-[13px] font-semibold text-muted-foreground">{sponsor.name}</span>}
+                        {sponsor.logo && <img src={sponsor.logo} alt={sponsor.iconOnly ? '' : sponsor.name} className="h-5 w-auto max-w-[120px]" />}
+                        {(!sponsor.logo || sponsor.iconOnly) && <span className="truncate text-[13px] font-semibold text-muted-foreground">{sponsor.name}</span>}
                         <span className="kicker ml-auto">Sponsor</span>
                     </a>
                 ))}
